@@ -129,7 +129,7 @@ const ventas = [
  */
 
 function valorVenta(ventas) {
-    totalVenta = ventas.cantidad * ventas.precio;
+    const totalVenta = ventas.cantidad * ventas.precio;
     return totalVenta;
 }
 // ============================================================================
@@ -147,7 +147,7 @@ function valorVenta(ventas) {
 function totalVendido(ventas) {
     let total = 0;
     
-    for (venta of ventas) {
+    for (const venta of ventas) {
         const subtotal = valorVenta(venta);
         total = total + subtotal;
     }
@@ -159,10 +159,10 @@ function totalVendido(ventas) {
  * @param {Array} ventas - Arreglo de objetos de ventas.
  * @returns {number} Total de unidades vendidas.
  */
-function totalUnidades(ventas) {
+function unidadesVendidas(ventas) {
     let totalUnd = 0;
 
-    for (venta of ventas){
+    for (const venta of ventas){
         if (venta.cantidad > 0){
             totalUnd = totalUnd + venta.cantidad;
         }
@@ -178,10 +178,10 @@ function totalUnidades(ventas) {
  */
 function ventaMayor(ventas) {
     let mayorValor = 0;
-    let mayorRegistro = {};
+    let mayorRegistro = null;
     
 
-    for (venta of ventas){
+    for (const venta of ventas){
         if (venta.cantidad > 0){
             let totalVenta = valorVenta(venta);
 
@@ -204,7 +204,7 @@ function ticketPromedio(ventas) {
     let ventasVal = 0;
     let sumaVentas = 0;
 
-    for (venta of ventas) {
+    for (const venta of ventas) {
         if (venta.cantidad > 0) {
             ventasVal = ventasVal + 1;
             sumaVentas = sumaVentas + valorVenta(venta);
@@ -226,7 +226,7 @@ function ventasPorCiudad(ventas, ciudad) {
     let total = 0
     const ciudadBuscada = ciudad.trim().toLowerCase();
 
-    for (venta of ventas) {
+    for (const venta of ventas) {
         if (venta.cantidad > 0 && (ciudadBuscada === venta.ciudad.trim().toLowerCase())){
             total = total + valorVenta(venta);
         }
@@ -234,7 +234,6 @@ function ventasPorCiudad(ventas, ciudad) {
     return total
 }
 
-console.log(ventaMayor([]))
 
 // ============================================================================
 // MINIRRETO 3: Métodos de arreglo (.filter, .map, .reduce, .sort) y Top K
@@ -242,6 +241,41 @@ console.log(ventaMayor([]))
 // Guía recomendada: patrones/03-filter-map-reduce.js, 04-objetos-como-diccionarios.js
 //                   y 05-ordenar-inmutable-y-top-k.js
 // ============================================================================
+
+function totalVendidoM (ventas) {
+    const ventasValidas = ventas.filter(venta => venta.cantidad>0);
+    const subtotales = ventasValidas.map(venta => valorVenta(venta));
+
+    return 
+
+}
+
+
+
+
+/*function totalVendido(ventas) {
+    let total = 0;
+    
+    for (venta of ventas) {
+        const subtotal = valorVenta(venta);
+        total = total + subtotal;
+    }
+    return total;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Devuelve un nuevo arreglo únicamente con las ventas cuya cantidad sea mayor a 0.
