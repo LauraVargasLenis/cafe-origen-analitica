@@ -267,117 +267,79 @@ function unidadesVendidasM (ventas) {
 }
 
 
-function ventasPorCiudadM (ventas) {
-    const ventasValidas = ventas.filter(venta => venta.cantidad>0);
-    
-    const ventasciudad = ventasValidas.reduce((acumulador, venta) => {
-        if (!acumulador[venta.ciudad]) {
-            acumulador[venta.ciudad] = 0 ;
-        }
-        return acumulador +valorVenta(venta)
-    }, {})
-    return ventasciudad
-}
-
-
-
-
-/*
-function ventasPorCiudad(ventas, ciudad) {
-    let total = 0
+function ventasPorCiudadM (ventas, ciudad) {
     const ciudadBuscada = ciudad.trim().toLowerCase();
 
-    for (const venta of ventas) {
-        if (venta.cantidad > 0 && (ciudadBuscada === venta.ciudad.trim().toLowerCase())){
-            total = total + valorVenta(venta);
+    const ventasValidas = ventas.filter(venta => 
+        venta.cantidad > 0 &&
+        venta.ciudad.trim().toLowerCase() === ciudadBuscada
+    );
+
+    const subtotales = ventasValidas.map(venta => valorVenta(venta));
+
+    const total = subtotales.reduce((acumulador, subtotal) => {
+        return acumulador + subtotal;
+    }, 0);
+
+    return total;
+}
+
+function unidadesPorProducto (ventas) {
+    const ventasValidas = ventas.filter(venta => venta.cantidad > 0);
+
+    const unidadesProducto = ventasValidas.reduce((acumulador, venta) => {
+        const producto = venta.producto;
+
+        if (!acumulador[producto]) {
+            acumulador[producto] = 0;
         }
-    }
-    return total
+
+        acumulador[producto] = acumulador[producto] + venta.cantidad;
+
+        return acumulador;
+    }, {});
+
+    return unidadesProducto;
 }
 
-*/
 
+function topProductosPorValor (ventas, k) {
+    const ventasValidas = ventas.filter(venta => venta.cantidad > 0);
 
+    const valorProducto = ventasValidas.reduce((acumulador, venta) => {
+        const producto = venta.producto;
 
+        if (!acumulador[producto]) {
+            acumulador[producto] = 0;
+        }
 
+        acumulador[producto] = acumulador[producto] + valorVenta(venta);
 
+        return acumulador;
+    }, {});
 
+    const arregloProductos = Object.entries(valorProducto);
+    const productosOrdenados = [...arregloProductos].sort((a, b) => b[1] - a[1]);
 
+    const topProductos = productosOrdenados.slice(0, k);
 
-
-
-/**
- * Devuelve un nuevo arreglo únicamente con las ventas cuya cantidad sea mayor a 0.
- * Método sugerido: .filter()
- * @param {Array} ventas - Arreglo de objetos de ventas.
- * @returns {Array} Ventas con cantidad > 0.
- */
-function ventasValidas(ventas) {
-  // Tu código aquí
+    return topProductos;
 }
 
-/**
- * Transforma cada venta válida en un objeto resumido con la estructura:
- * { id, producto, ciudad, total } donde `ciudad` esté normalizada en minúsculas.
- * Método sugerido: .filter() seguido de .map()
- * @param {Array} ventas - Arreglo de objetos de ventas.
- * @returns {Array} Arreglo de objetos resumidos.
- */
-function resumenVentas(ventas) {
-  // Tu código aquí
-}
 
-/**
- * Agrupa y suma el valor total vendido por cada ciudad normalizada en minúsculas.
- * Ejemplo de salida: { medellín: 356000, bogotá: 276000, ... }
- * Patrón sugerido: Objeto como diccionario con .reduce()
- * @param {Array} ventas - Arreglo de objetos de ventas.
- * @returns {Object} Diccionario { [ciudadNormalizada]: totalVendido }.
- */
-function totalPorCiudad(ventas) {
-  // Tu código aquí
-}
-
-/**
- * Agrupa y suma el total de unidades vendidas por cada producto.
- * Ejemplo de salida: { "Origen Huila 500 g": 7, "Origen Nariño 250 g": 6, ... }
- * Patrón sugerido: Objeto como diccionario con .reduce()
- * @param {Array} ventas - Arreglo de objetos de ventas.
- * @returns {Object} Diccionario { [producto]: totalUnidades }.
- */
-function unidadesPorProducto(ventas) {
-  // Tu código aquí
-}
-
-/**
- * Devuelve un arreglo con los nombres de los `k` productos que más dinero generaron,
- * ordenados de mayor a menor valor vendido.
- * Ejemplo con k = 3: [ "Origen Huila 500 g", "Origen Sierra 500 g", "Prensa francesa" ]
- * Patrón sugerido: Diccionario con .reduce() -> Object.entries() -> .sort() -> .slice(0, k) -> .map()
- * @param {Array} ventas - Arreglo de objetos de ventas.
- * @param {number} k - Cantidad de productos a incluir en el ranking.
- * @returns {Array<string>} Nombres de los k productos con mayor valor vendido.
- */
-function topProductosPorValor(ventas, k) {
-
-  // Tu código aquí
-}
-/*
 module.exports = {
-  valorVenta,
-  totalVendido,
-  totalUnidades,
-  ventaMayorValor,
-  ventasDeCiudad,
-  promedioPorVenta,
-  ventasValidas,
-  resumenVentas,
-  totalPorCiudad,
-  unidadesPorProducto,
-  topProductosPorValor,
+    valorVenta,
+    totalVendido,
+    unidadesVendidas,
+    ventaMayor,
+    ticketPromedio,
+    ventasPorCiudad,
+    totalVendidoM,
+    unidadesVendidasM,
+    ventasPorCiudadM,
+    unidadesPorProducto,
+    topProductosPorValor
 };
-*/
-
 
 
 
