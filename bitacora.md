@@ -48,13 +48,13 @@ CICLOS
 
 | Propiedad | Tipo de dato | Significado |
 | :--- | :--- | :--- |
-| `id` | | |
-| `fecha` | | |
-| `cliente` | | |
-| `producto` | | |
-| `ciudad` | | |
-| `cantidad` | | |
-| `precio` | | |
+| id | number | Identificador único de cada registro de venta. | 1 |
+| fecha | string | Fecha de la venta en formato AAAA-MM-DD. | "2026-09-01" |
+| cliente | string | Código de identificación del cliente. | "C01" |
+| producto | string | Nombre y presentación del producto comercializado. | "Origen Huila 500 g" |
+| ciudad | string | Ciudad en la que se registró la venta. | "Medellín" |
+| cantidad | number | Número de unidades registradas en la venta. | 2 |
+| precio | number | Precio unitario del producto en pesos colombianos. | 42000 |
 
 ---
 
@@ -73,25 +73,67 @@ CICLOS
 ## 3. Patrones con ciclos manuales (Minirreto 2)
 
 - **`totalVendido(ventas)`**:
-  - *Patrón usado (contador, acumulador, filtro, extremo)*:
+  - INICIO
+        Recibir un objeto venta.
+        Multiplicar la cantidad por el precio.
+        Retornar el valor obtenido.
+    FIN
 - **`totalUnidades(ventas)`**:
-  - *Patrón usado*:
+  - INICIO
+        Inicializar totalUnd en 0.
+
+        PARA CADA venta EN ventas:
+            SI cantidad > 0:
+                Sumar la cantidad a totalUnd.
+            FIN SI
+        FIN PARA
+
+        Retornar totalUnd.
+    FIN
 - **`ventaMayorValor(ventas)`**:
-  - *Patrón usado*:
+  - INICIO
+        Inicializar mayorValor en 0.
+        Inicializar mayorRegistro en null.
+
+        PARA CADA venta EN ventas:
+            SI cantidad > 0:
+                Calcular el valor de la venta.
+
+                SI valorVenta > mayorValor:
+                    Actualizar mayorValor.
+                    Guardar el registro completo en mayorRegistro.
+                FIN SI
+            FIN SI
+        FIN PARA
+
+        Retornar mayorRegistro.
+    FIN
 - **`ventasDeCiudad(ventas, ciudad)`**:
-  - *Patrón usado*:
-- **`promedioPorVenta(ventas)`**:
-  - *Patrón usado*:
+  - INICIO
+        Inicializar total en 0.
+        Normalizar el nombre de la ciudad buscada.
+
+        PARA CADA venta EN ventas:
+            Normalizar el nombre de la ciudad de la venta.
+
+            SI cantidad > 0 Y las ciudades coinciden:
+                Sumar el valor de la venta al total.
+            FIN SI
+        FIN PARA
+
+        Retornar total.
+    FIN
 
 ---
 
 ## 4. Del ciclo al método: Preguntas de transformación y agrupación (Minirreto 3)
+Para totalVendidoM(ventas)
 
-- **¿Qué filtro? (`.filter`)**:
-- **¿Qué transformo? (`.map`)**:
-- **¿Qué reduzco / acumulo? (`.reduce`)**:
-- **¿Cómo agrupo en un diccionario?**:
-- **¿Cómo ordeno sin modificar el arreglo original? (`.sort`)**:
+- **¿Qué filtro? (`.filter`)**: Los registros cuya cantidad es mayor que 0
+- **¿Qué transformo? (`.map`)**: Cada objeto de venta en su subtotal monetario mediante map() y valorVenta()
+- **¿Qué reduzco / acumulo? (`.reduce`)**: Los subtotales
+- **¿Cómo agrupo en un diccionario?**: N/A
+- **¿Cómo ordeno sin modificar el arreglo original? (`.sort`)**: N/A
 
 ---
 
