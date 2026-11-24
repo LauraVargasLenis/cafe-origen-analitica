@@ -246,27 +246,56 @@ function totalVendidoM (ventas) {
     const ventasValidas = ventas.filter(venta => venta.cantidad>0);
     const subtotales = ventasValidas.map(venta => valorVenta(venta));
 
-    return 
+    const total = subtotales.reduce((acumulador, subtotal) =>{
+        return acumulador + subtotal    ;
+    }, 0);
 
+    return total
+
+}
+
+
+function unidadesVendidasM (ventas) {
+    const ventasValidas = ventas.filter(venta => venta.cantidad>0);
+    const totalUnd = ventasValidas.map(venta => venta.cantidad );
+
+    const unidadesVend = totalUnd.reduce((acumulador, cantidad) =>{
+        return acumulador + cantidad;
+    }, 0);
+
+    return unidadesVend
+}
+
+
+function ventasPorCiudadM (ventas) {
+    const ventasValidas = ventas.filter(venta => venta.cantidad>0);
+    
+    const ventasciudad = ventasValidas.reduce((acumulador, venta) => {
+        if (!acumulador[venta.ciudad]) {
+            acumulador[venta.ciudad] = 0 ;
+        }
+        return acumulador +valorVenta(venta)
+    }, {})
+    return ventasciudad
 }
 
 
 
 
-/*function totalVendido(ventas) {
-    let total = 0;
-    
-    for (venta of ventas) {
-        const subtotal = valorVenta(venta);
-        total = total + subtotal;
+/*
+function ventasPorCiudad(ventas, ciudad) {
+    let total = 0
+    const ciudadBuscada = ciudad.trim().toLowerCase();
+
+    for (const venta of ventas) {
+        if (venta.cantidad > 0 && (ciudadBuscada === venta.ciudad.trim().toLowerCase())){
+            total = total + valorVenta(venta);
+        }
     }
-    return total;
-}*/
+    return total
+}
 
-
-
-
-
+*/
 
 
 
